@@ -7,7 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios';
 function App() {
   const [link, setLink] = useState('');
-
+  const [postError, setPostError] = useState('');
   const handleChange = (event: React.FormEvent): void => {
     setLink((event.target as HTMLInputElement).value);
   };
@@ -20,9 +20,12 @@ function App() {
       })
       .then((re) => {
         setLink('');
+        setPostError('');
         (event.target as HTMLFormElement).reset();
       })
-      .catch((e) => {});
+      .catch((e) => {
+        setPostError(e.response.data.message);
+      });
   };
   return (
     <div className="App">
@@ -51,6 +54,7 @@ function App() {
           Submit
         </Button>
       </Form>
+      <h4 style={{ color: 'red' }}>{postError ?? postError}</h4>
     </div>
   );
 }
