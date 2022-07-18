@@ -33,7 +33,7 @@ export class AppService {
     ffmpeg.setFfprobePath(ffprobePath.path);
     ffmpeg(stream)
       .audioBitrate(320)
-      .save(`download/${title}.mp3`)
+      .save(`download/mp3/${title}.mp3`)
       .on('end', () => {
         console.log('Done! Downloaded');
       });
@@ -89,5 +89,34 @@ export class AppService {
       .catch((e) => {
         console.log(e);
       });
+  }
+
+  async transfer(link: string) {
+    // const output_dir = path.join(__dirname);
+
+    const stream = ytdl(link, {
+      filter: 'audioonly',
+    });
+    const title = await ytdl
+      .getInfo(link)
+      .then((response) => {
+        // console.log(`response`, response);
+        //console.log(response);
+        return response.player_response.videoDetails.title;
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+    //console.log(res);
+    ffmpeg.setFfmpegPath(ffmpegPath.path);
+    ffmpeg.setFfprobePath(ffprobePath.path);
+    ffmpeg(stream)
+      .audioBitrate(320)
+      .save(`download/m4a/${title}.m4a`)
+      .on('end', () => {
+        console.log('Done! Downloaded');
+      });
+
+    return title;
   }
 }

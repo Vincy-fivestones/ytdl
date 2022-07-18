@@ -13,4 +13,9 @@ export class AppController {
   getFile(@Body() body) {
     return this.appService.convert(body.youtubelink);
   }
+
+  @Post('m4a')
+  transfer(@Body() body) {
+    return this.appService.transfer(body.youtubelink);
+  }
 }
